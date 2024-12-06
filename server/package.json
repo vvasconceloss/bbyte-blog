@@ -1,0 +1,31 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "server.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts"
+  },
+  "keywords": [
+    "API",
+    "Server",
+    "Blog",
+    "Typescript",
+    "Node"
+  ],
+  "author": "Victor Vasconcelos",
+  "license": "MIT",
+  "description": "The server side developed with typescript",
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "fastify": "^5.1.0",
+    "fastify-cors": "^6.0.3",
+    "pg": "^8.13.1"
+  }
+}
