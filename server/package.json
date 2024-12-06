@@ -1,0 +1,16 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["API", "Server", "Blog", "Typescript", "Node"],
+  "author": "Victor Vasconcelos",
+  "license": "MIT",
+  "description": "The server side developed with typescript",
+  "devDependencies": {
+    "typescript": "^5.7.2"
+  }
+}
