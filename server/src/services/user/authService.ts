@@ -1,7 +1,8 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import type { UserType } from "../../types/userType.js";
+import { Role } from "../../enums/Role.js";
 import { Prisma, PrismaClient } from "@prisma/client";
+import type { UserType } from "../../types/userType.js";
 import { handlePrismaError } from "../../utils/prismaErrorHandler.js";
 
 const prisma = new PrismaClient();
@@ -28,7 +29,8 @@ export const serviceRegisterUser = async (userData: UserType) => {
     const hashedPassword = await bcrypt.hash(userData.password, 10);
 
     const user = await prisma.user.create({
-      data: {
+      data: {        
+        role: Role.USER,
         email: userData.email,
         password: hashedPassword,
         username: userData.username,
@@ -65,7 +67,7 @@ export const serviceLoginUser = async (userData: UserType) => {
     if (!jwtSecret)
       throw new Error("This secret token is not valid");
 
-    const tokenJwt = jwt.sign({ id: findUserByEmail.id }, jwtSecret, { expiresIn: "1h" });
+    const tokenJwt = jwt.sign({ id: findUserByEmail.id, role: findUserByEmail.role }, jwtSecret, { expiresIn: "1h" });
 
     return { tokenJwt };
   } catch (err: any) {
