@@ -22,6 +22,21 @@ export const serviceFindUser = async (userId: number) => {
   }
 }
 
+//READ ALL USERS
+export const serviceFindAllUsers = async () => {
+  try {
+    const findAllUsers = await prisma.user.findMany();
+    
+    return findAllUsers;
+  } catch (err: any) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError) {
+      throw new Error(handlePrismaError(err));
+    }
+
+    throw new Error(`Could not list all users: ${err.message}`);
+  }
+}
+
 //UPDATE
 export const serviceUpdateUser = async (userId: number, userData: UserType) => {
   try {
