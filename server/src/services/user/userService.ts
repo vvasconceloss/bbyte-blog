@@ -1,8 +1,8 @@
 import bcrypt from "bcryptjs";
-import type { UserType } from "../types/userType.js";
+import type { UserType } from "../../types/userType.js";
 import { Prisma, PrismaClient } from "@prisma/client";
-import type { PasswordType } from "../types/passwordType.js";
-import { handlePrismaError } from "../utils/prismaErrorHandler.js";
+import type { PasswordType } from "../../types/passwordType.js";
+import { handlePrismaError } from "../../utils/prismaErrorHandler.js";
 
 const prisma = new PrismaClient();
 

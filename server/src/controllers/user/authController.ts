@@ -1,7 +1,7 @@
 import type { FastifyReply } from "fastify";
 import type { UserType } from "../types/userType.js";
 import { userSchema } from "../utils/dataValidation.js";
-import { serviceLoginUser, serviceRegisterUser } from "../services/authService.js";
+import { serviceLoginUser, serviceRegisterUser } from "../services/user/authService.js";
 
 export const controllerRegisterUser = async (userData: UserType, reply: FastifyReply) => {
   const validationData = userSchema.safeParse(userData);

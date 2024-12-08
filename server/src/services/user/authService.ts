@@ -1,8 +1,8 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import type { UserType } from "../types/userType.js";
+import type { UserType } from "../../types/userType.js";
 import { Prisma, PrismaClient } from "@prisma/client";
-import { handlePrismaError } from "../utils/prismaErrorHandler.js";
+import { handlePrismaError } from "../../utils/prismaErrorHandler.js";
 
 const prisma = new PrismaClient();
 

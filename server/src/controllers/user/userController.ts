@@ -1,7 +1,7 @@
 import type { FastifyReply } from "fastify";
 import type { UserType } from "../types/userType.js";
 import type { PasswordType } from "../types/passwordType.js";
-import { serviceDeleteUser, serviceUpdatePassword, serviceUpdateUser } from "../services/userService.js";
+import { serviceDeleteUser, serviceUpdatePassword, serviceUpdateUser } from "../services/user/userService.js";
 
 export const controllerDeleteUser = async (userId: number, reply: FastifyReply) => {
   try {

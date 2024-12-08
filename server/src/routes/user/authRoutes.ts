@@ -1,6 +1,6 @@
-import type { UserType } from "../types/userType.js";
-import { controllerLoginUser, controllerRegisterUser } from "../controllers/authController.js";
+import type { UserType } from "../../types/userType.js";
 import { FastifyInstance, type FastifyReply, type FastifyRequest } from "fastify";
+import { controllerLoginUser, controllerRegisterUser } from "../../controllers/user/authController.js";
 
 export async function authRoutes(fastify: FastifyInstance) {
   fastify.post('/register', {
