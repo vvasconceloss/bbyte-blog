@@ -8,6 +8,23 @@ const prisma = new PrismaClient();
 //CREATE
 export const serviceCreateUser = async (userData: UserType) => {
   try {
+    const [emailExist, usernameExist] = await Promise.all([
+      prisma.user.findUnique({
+        where: { email: userData.email }
+      }),
+      prisma.user.findUnique({
+        where: {
+          username: userData.username
+        }
+      }),
+    ]);
+
+    if (emailExist)
+      throw new Error(`This email has already been registered`);
+
+    if (usernameExist)
+      throw new Error(`This user already exists`);
+
     const hashedPassword = await bcrypt.hash(userData.password, 10);
 
     const user = await prisma.user.create({
