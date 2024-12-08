@@ -26,3 +26,21 @@ export const serviceCreatePost = async (postData: PostType, userId: number) => {
     throw new Error(`This post cannot be created: ${err.message}`);
   }
 }
+
+export const serviceFindAllPosts = async () => {
+  try {
+    const allPosts = await prisma.post.findMany({
+      include:  {
+        author: true
+      }
+    });
+
+    return allPosts;
+  } catch (err: any) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError) {
+      throw new Error(handlePrismaError(err));
+    }
+
+    throw new Error(`Could not list all posts: ${err.message}`);
+  }
+}
