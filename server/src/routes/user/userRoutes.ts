@@ -1,7 +1,10 @@
-import type { UserType } from "../types/userType.js";
-import type { PasswordType } from "../types/passwordType.js";
+import type { UserType } from "../../types/userType.js";
+import type { PasswordType } from "../../types/passwordType.js";
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { controllerDeleteUser, controllerUpdatePassword, controllerUpdateUser } from "../controllers/userController.js";
+import { controllerDeleteUser, controllerFindAllUsers, controllerUpdatePassword, controllerUpdateUser } from "../../controllers/user/userController.js";
+import { verifyToken } from "../../middlewares/user/authUser.js";
+import { checkRole } from "../../middlewares/user/checkUserRole.js";
+import { Role } from "@prisma/client";
 
 export async function userRoutes(fastify: FastifyInstance) {
   fastify.delete('/user/:userId', {
@@ -65,6 +68,20 @@ export async function userRoutes(fastify: FastifyInstance) {
       await controllerUpdatePassword(userId, request.body, reply); 
     } catch (err: any) {
       console.error(`error accessing the updated password controller: ${err}`);
+      process.exit(1);
+    }
+  });
+
+  fastify.get('/users', { preHandler: [
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      await verifyToken(request, reply);
+      await (await checkRole(Role.ADMIN))(request, reply);
+    }
+  ] }, async (request: FastifyRequest, reply: FastifyReply) => {
+    try {
+      await controllerFindAllUsers(reply);
+    } catch (err: any) {
+      console.error(`error accessing the find all users controller: ${err}`);
       process.exit(1);
     }
   });
