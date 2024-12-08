@@ -1,7 +1,7 @@
-import type { UserType } from "../types/userType.js";
-import type { PasswordType } from "../types/passwordType.js";
+import type { UserType } from "../../types/userType.js";
+import type { PasswordType } from "../../types/passwordType.js";
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { controllerDeleteUser, controllerUpdatePassword, controllerUpdateUser } from "../controllers/userController.js";
+import { controllerDeleteUser, controllerUpdatePassword, controllerUpdateUser } from "../../controllers/user/userController.js";
 
 export async function userRoutes(fastify: FastifyInstance) {
   fastify.delete('/user/:userId', {
