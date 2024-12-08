@@ -3,7 +3,19 @@ import { controllerCreateUser } from "../controllers/userController.js";
 import { FastifyInstance, type FastifyReply, type FastifyRequest } from "fastify";
 
 export async function authRoutes(fastify: FastifyInstance) {
-  fastify.post('/register', async (request: FastifyRequest<{ Body: UserType }>, reply: FastifyReply) => {
+  fastify.post('/register', {
+    schema: {
+      body: {
+        type: 'object',
+        properties: {
+          username: { type: 'string' },
+          password: { type: 'string', minLength: 8 },
+          email: { type: 'string', format: 'email' },
+        },
+        required: ['email', 'password', 'username'],
+      },
+    },
+  }, async (request: FastifyRequest<{ Body: UserType }>, reply: FastifyReply) => {
     try {
       await controllerCreateUser(request.body, reply);
     } catch (err) {
