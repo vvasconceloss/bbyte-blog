@@ -1,25 +1,7 @@
 import type { FastifyReply } from "fastify";
 import type { UserType } from "../types/userType.js";
-import { userSchema } from "../utils/dataValidation.js";
 import type { PasswordType } from "../types/passwordType.js";
-import { serviceCreateUser, serviceDeleteUser, serviceUpdatePassword, serviceUpdateUser } from "../services/userService.js";
-
-export const controllerCreateUser = async (userData: UserType, reply: FastifyReply) => {
-  const validationData = userSchema.safeParse(userData);
-
-  if (!validationData.success) {
-    console.error(`Validation error: ${JSON.stringify(validationData.error.errors)}`);
-    return reply.status(400).send({ message: 'Validation error', details: validationData.error.errors });
-  }
-
-  try {
-    const newUser = await serviceCreateUser(userData);
-    return reply.status(201).send({ newUser });
-  } catch (err: any) {
-    console.error(`error accessing the create user service: ${err.message}`);
-    return reply.status(409).send({ message: err.message });
-  }
-}
+import { serviceDeleteUser, serviceUpdatePassword, serviceUpdateUser } from "../services/userService.js";
 
 export const controllerDeleteUser = async (userId: number, reply: FastifyReply) => {
   try {
@@ -32,13 +14,6 @@ export const controllerDeleteUser = async (userId: number, reply: FastifyReply) 
 }
 
 export const controllerUpdateUser = async (userId: number, userData: UserType, reply: FastifyReply) => {
-  const validationData = userSchema.safeParse(userData);
-
-  if (!validationData.success) {
-    console.error(`Validation error: ${JSON.stringify(validationData.error.errors)}`);
-    return reply.status(400).send({ message: 'Validation error', details: validationData.error.errors });
-  }
-
   try {
     const updatedUser = await serviceUpdateUser(userId, userData);
     return reply.status(201).send({ updatedUser })
