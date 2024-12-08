@@ -1,12 +1,14 @@
 import Fastify from "fastify";
 import { configDotenv } from "dotenv";
 import { authRoutes } from "./routes/authRoutes.js";
+import { userRoutes } from "./routes/userRoutes.js";
 
 configDotenv();
 
 const serverFastify = Fastify();
 
 serverFastify.register(authRoutes);
+serverFastify.register(userRoutes);
 
 const serverStart = async () => {
   try {
