@@ -1,7 +1,7 @@
 import type { FastifyReply } from "fastify";
 import type { UserType } from "../../types/userType.js";
 import type { PasswordType } from "../../types/passwordType.js";
-import { serviceDeleteUser, serviceUpdatePassword, serviceUpdateUser } from "../../services/user/userService.js";
+import { serviceDeleteUser, serviceFindAllUsers, serviceUpdatePassword, serviceUpdateUser } from "../../services/user/userService.js";
 
 export const controllerDeleteUser = async (userId: number, reply: FastifyReply) => {
   try {
@@ -29,6 +29,16 @@ export const controllerUpdatePassword = async (userId: number, userPassword: Pas
     return reply.status(200).send({ message: 'Password successfully updated' });
   } catch (err: any) {
     console.error(`error accessing the update password service: ${err.message}`);
+    return reply.status(409).send({ message: err.message });
+  }
+}
+
+export const controllerFindAllUsers = async (reply: FastifyReply) => {
+  try {
+    const allUsers = await serviceFindAllUsers();
+    return reply.status(200).send({ allUsers });
+  } catch (err: any) {
+    console.error(`error accessing the find all users service: ${err.message}`);
     return reply.status(409).send({ message: err.message });
   }
 }
