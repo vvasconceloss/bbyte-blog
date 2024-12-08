@@ -45,3 +45,24 @@ export const serviceDeleteUser = async (userId: number) => {
     throw new Error(`The user could not be deleted: ${err.message}`);
   }
 }
+
+//UPDATE
+export const serviceUpdateUser = async (userId: number, userData: UserType) => {
+  try {
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        email: userData.email,
+        username: userData.username
+      }
+    });
+
+    return updatedUser;
+  } catch (err: any) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError) {
+      throw new Error(handlePrismaError(err));
+    }
+
+    throw new Error(`The user could not be updated: ${err.message}`);
+  }
+}
