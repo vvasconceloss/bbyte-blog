@@ -1,6 +1,6 @@
 import type { FastifyReply } from "fastify";
 import type { PostType } from "../../types/postType.js";
-import { serviceCreatePost, serviceFindAllPosts, serviceFindAllUserPosts, serviceUpdatePost } from "../../services/post/postService.js";
+import { serviceCreatePost, serviceDeletePost, serviceFindAllPosts, serviceFindAllUserPosts, serviceUpdatePost } from "../../services/post/postService.js";
 
 export const controllerCreatePost = async (postData: PostType, userId: number, reply: FastifyReply) => {
   try {
@@ -38,6 +38,16 @@ export const controllerUpdatePost = async (postData: PostType, postId: number, a
     return reply.status(200).send({ updatedPost });
   } catch (err: any) {
     console.error(`error accessing the update post service: ${err.message}`);
+    return reply.status(409).send({ message: err.message });
+  }
+}
+
+export const controllerDeletePost = async (postId: number, authorId: number, reply: FastifyReply) => {
+  try {
+    await serviceDeletePost(postId, authorId);
+    return reply.status(200).send({ message: 'Post successfully deleted' });
+  } catch (err: any) {
+    console.error(`error accessing the delete post service: ${err.message}`);
     return reply.status(409).send({ message: err.message });
   }
 }
