@@ -1,7 +1,7 @@
 import type { PostType } from "../../types/postType.js";
 import { verifyToken } from "../../middlewares/user/authUser.js";
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { controllerCreatePost, controllerFindAllPosts, controllerFindAllUserPosts, controllerUpdatePost } from "../../controllers/post/postController.js";
+import { controllerCreatePost, controllerDeletePost, controllerFindAllPosts, controllerFindAllUserPosts, controllerUpdatePost } from "../../controllers/post/postController.js";
 
 export async function postRoutes(fastify: FastifyInstance) {
   fastify.get('/posts', async (request: FastifyRequest, reply: FastifyReply) => {
@@ -71,6 +71,33 @@ export async function postRoutes(fastify: FastifyInstance) {
       await controllerUpdatePost(request.body, postId, authorId, reply);
     } catch (err: any) {
       console.error(`error accessing the updated post controller: ${err}`);
+      process.exit(1);
+    }
+  });
+
+  fastify.delete('/post/:postId', {
+    schema: {
+      params: {
+        type: 'object',
+        properties: {
+          postId: { type: 'integer' },
+        },
+        required: ['postId'],
+      },
+    },
+    preHandler: [
+      async (request: FastifyRequest<{ Body: PostType }>, reply: FastifyReply) => {
+        await verifyToken(request, reply);
+      }
+    ]
+  }, async (request: FastifyRequest<{ Params: { postId: number }, Body: PostType }>, reply: FastifyReply) => {
+    try {
+      const { postId } = request.params;
+      const { authorId } = request.body;
+
+      await controllerDeletePost(postId, authorId, reply);
+    } catch (err: any) {
+      console.error(`error accessing the deleted post controller: ${err}`);
       process.exit(1);
     }
   });
