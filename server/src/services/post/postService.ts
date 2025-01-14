@@ -116,3 +116,27 @@ export const serviceUpdatePost = async (postData: PostType, postId: number, auth
     throw new Error(`The post could not be updated: ${err.message}`);
   }
 }
+
+export const serviceDeletePost = async (postId: number, authorId: number) => {
+  const findPost = await serviceFindPostById(postId);
+  
+  if (!findPost)
+    throw new Error("This post was not found");
+
+  if (findPost.authorId !== authorId)
+    throw new Error("No permission to edit this post");
+
+  try {
+    const deletedPost = await prisma.post.delete({
+      where: { id: postId }
+    });
+
+    return deletedPost;
+  } catch (err: any) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError) {
+      throw new Error(handlePrismaError(err));
+    }
+
+    throw new Error(`The post could not be deleted: ${err.message}`);
+  }
+}
